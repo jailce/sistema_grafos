@@ -38,23 +38,22 @@ void dfsIterativa(Grafo *g, int origem) {
 
   // Começa empilhando a origem
   pilha[0] = origem;
+  visitado[origem] = 1;
   int topo = 1;
 
   while (topo > 0) {
     // Desempilha o vértice do topo
     int v = pilha[--topo];
-    if (!visitado[v]) {
-      visitado[v] = 1;
-      printf("%d ", v);
+    printf("%d ", v);
 
-      // Empilha todos os vizinhos não visitados do vértice v
-      No *atual = g->lista[v];
-      while (atual != NULL) {
-        if (!visitado[atual->destino]) {
-          pilha[topo++] = atual->destino;
-        }
-        atual = atual->prox;
+    // Empilha todos os vizinhos não visitados do vértice v
+    No *atual = g->lista[v];
+    while (atual != NULL) {
+      if (!visitado[atual->destino]) {
+        visitado[atual->destino] = 1;
+        pilha[topo++] = atual->destino;
       }
+      atual = atual->prox;
     }
   }
 
@@ -103,21 +102,27 @@ void bfs(Grafo *g, int origem) {
 }
 
 /*
-  Imprime todos os compoenentes conexos do grafo e retorna um inteiro
+  Imprime todos os componentes conexos do grafo e retorna um inteiro
   representando o número de componentes conexos do grafo
 */
 
 int componentesConexos(Grafo *g) {
   int qtd = 0;
   int *visitado = (int *)calloc(g->V, sizeof(int));
+  if (visitado == NULL) {
+    printf("Erro na alocacao de memoria\n");
+    exit(1);
+  }
 
   for (int i = 0; i < g->V; ++i) {
     if (visitado[i] == 0) {
-      printf("Componente conexo %d", ++qtd);
+      printf("Componente conexo %d\n", ++qtd);
       dfsRecursiva(g, i, visitado);
       printf("\n\n");
     }
   }
+
+  free(visitado);
 
   return qtd;
 }
@@ -144,14 +149,13 @@ int *bfsDistancias(Grafo *g, int origem) {
 
   fila[0] = origem;
   dist[origem] = 0;
+  visitado[origem] = 1;
   int inicio = 0; // ponteiro para o inicio da fila (próximo a ser processado)
   int fim = 1;
 
   while (inicio < fim) {
     // Desenfileira o próximo vértice a ser processado
     int v = fila[inicio++];
-
-    visitado[v] = 1;
 
     // Enfileira todos os vizinhos não visitados do vértice v
     No *atual = g->lista[v];
