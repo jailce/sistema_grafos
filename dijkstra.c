@@ -22,6 +22,9 @@ static int extrairMinimoDijkstra(int *dist, int *visitado, int V) {
 
     return indice;
 }
+
+
+
 // Implementação do algoritmo de Dijkstra
 void dijkstra(Grafo *g, int origem, int **dist, int **anterior) {
     if (g == NULL || dist == NULL || anterior == NULL || origem < 0 || origem >= g->V) {
@@ -33,19 +36,20 @@ void dijkstra(Grafo *g, int origem, int **dist, int **anterior) {
     int *predecessor = (int*) malloc(V * sizeof(int));
     int *visitado = (int*) calloc(V, sizeof(int));
 
+    // Se a alocação falhar, libera a memória alocada e retorna
     if (distancias == NULL || predecessor == NULL || visitado == NULL) {
         free(distancias);
         free(predecessor);
         free(visitado);
         return;
     }
-
+    //itera sobre todos os vértices para inicializar as distâncias e predecessores
     for (int i = 0; i < V; i++) {
         distancias[i] = INF;
         predecessor[i] = -1;
     }
     distancias[origem] = 0;
-
+    //iteração principal do Dijkstra, onde o vértice com a menor distância é selecionado e suas arestas são relaxadas
     for (int cont = 0; cont < V; cont++) {
         int u = extrairMinimoDijkstra(distancias, visitado, V);
         if (u == -1) {
@@ -69,6 +73,9 @@ void dijkstra(Grafo *g, int origem, int **dist, int **anterior) {
     *dist = distancias;
     *anterior = predecessor;
 }
+
+
+
 // Função para imprimir o caminho do vértice de origem até o vértice de destino usando o vetor de predecessores
 void imprimirCaminho(int *anterior, int origem, int destino) {
     if (destino == origem) {
@@ -84,6 +91,8 @@ void imprimirCaminho(int *anterior, int origem, int destino) {
     imprimirCaminho(anterior, origem, anterior[destino]);
     printf(" -> %d", destino);
 }
+
+
 // Função que combina a execução do algoritmo de Dijkstra e a impressão do caminho até um vértice alvo
 void executarDijkstra(Grafo *g, int origem, int destinoAlvo) {
     if (g == NULL) {
@@ -106,6 +115,9 @@ void executarDijkstra(Grafo *g, int origem, int destinoAlvo) {
         free(anterior);
         return;
     }
+
+
+
 
 // Imprime os resultados do algoritmo de Dijkstra
     printf("\n=== DIJKSTRA (Origem: %d) ===\n", origem);
