@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+Este arquivo implementa o algoritmo de Prim para encontrar a árvore geradora mínima (MST) de um grafo não direcionado e ponderado. 
+O algoritmo seleciona arestas de menor peso que conectam vértices ainda não incluídos na MST, garantindo que todos os vértices sejam conectados com o menor custo total possível.
+O algoritmo de Prim é eficiente para grafos densos e é uma escolha popular para problemas de otimização de redes, como redes de computadores, sistemas de transporte e planejamento urbano.
+A função prim() trata grafos desconexos internamente, imprimindo as arestas da árvore/floresta geradora mínima e o peso total da MST.
+1. Inicialmente, todos os vértices são considerados não incluídos na MST.
+2. O algoritmo começa com um vértice inicial e adiciona arestas de menor peso que conectam vértices ainda não incluídos na MST.
+3. O processo continua até que todos os vértices estejam incluídos na MST.
+*/
+
 int extrairMinimo(int *chave, int *na_mst, int V) {
     int minimo = -1;
     int indice_minimo = -1;
@@ -19,11 +29,29 @@ int extrairMinimo(int *chave, int *na_mst, int V) {
 
 
 void prim(Grafo *g) {
+    if (g == NULL) {
+        printf("Nenhum grafo carregado.\n");
+        return;
+    }
+
+    if (g->direcionado) {
+        printf("Aviso: Prim deve ser aplicado em grafos nao-direcionados.\n");
+        printf("A execucao continuara usando as arestas carregadas.\n");
+    }
+
     int V = g->V;
     int *pai = (int*)malloc(V * sizeof(int));
     int *chave = (int*)malloc(V * sizeof(int));
-    int *na_mst = (int*)malloc(V * sizeof(int));
+    int *na_mst = (int*)calloc(V, sizeof(int));
     int peso_total = 0;
+
+    if (pai == NULL || chave == NULL || na_mst == NULL) {
+        free(pai);
+        free(chave);
+        free(na_mst);
+        printf("Erro na alocacao de memoria\n");
+        return;
+    }
 
     for (int i = 0; i < V; i++) {
         chave[i] = -1;
