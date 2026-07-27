@@ -17,6 +17,7 @@ int extrairMinimo(int *chave, int *na_mst, int V) {
     return indice_minimo;
 }
 
+
 void prim(Grafo *g) {
     int V = g->V;
     int *pai = (int*)malloc(V * sizeof(int));
