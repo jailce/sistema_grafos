@@ -11,6 +11,11 @@ int ordenacaoTopologica(Grafo *g, int *ordem) {
     int V = g->V;
     int *grau_de_entrada = (int*) malloc(sizeof (int) * V);
 
+    // Inicializa o array de grau de entrada
+    for (int i = 0; i < V; i++) {
+        grau_de_entrada[i] = 0;
+    }
+
     // Calcula o grau de entrada de cada vértice
     for (int i = 0; i < V; i++) {
         No* atual = g->lista[i];
