@@ -103,6 +103,7 @@ int detectaCicloDirecionado(Grafo *g) {
     for (int i = 0; i < g->V; i++) {
         // Se o vértice não foi visitado, realiza DFS
         if (!visitado[i]) {
+            // Se a DFS detectar um ciclo, libera a memória e retorna 1
             if (dfsCiclo(g, i, visitado, na_pilha)) {
                 free(visitado);
                 free(na_pilha);
