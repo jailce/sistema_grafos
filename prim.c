@@ -1,0 +1,72 @@
+#include "grafo.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+int extrairMinimo(int *chave, int *na_mst, int V) {
+    int minimo = -1;
+    int indice_minimo = -1;
+
+    for (int v = 0; v < V; v++) {
+        if (na_mst[v] == 0 && chave[v] != -1) {
+            if (minimo == -1 || chave[v] < minimo) {
+                minimo = chave[v];
+                indice_minimo = v;
+            }
+        }
+    }
+    return indice_minimo;
+}
+
+void prim(Grafo *g) {
+    int V = g->V;
+    int *pai = (int*)malloc(V * sizeof(int));
+    int *chave = (int*)malloc(V * sizeof(int));
+    int *na_mst = (int*)malloc(V * sizeof(int));
+    int peso_total = 0;
+
+    for (int i = 0; i < V; i++) {
+        chave[i] = -1;
+        pai[i] = -1;
+    }
+
+    for (int inicio = 0; inicio < V; inicio++) {
+        if (na_mst[inicio] == 0) {
+            chave[inicio] = 0;
+
+            for (int count = 0; count < V; count++) {
+                int u = extrairMinimo(chave, na_mst, V);
+
+                if (u == -1) break;
+
+                na_mst[u] = 1;
+
+                No* atual = g->lista[u];
+                while (atual != NULL) {
+                    int v = atual->destino;
+                    int peso = atual->peso;
+
+                    if (na_mst[v] == 0 && (chave[v] == -1 || peso < chave[v])) {
+                        pai[v] = u;
+                        chave[v] = peso;
+                    }
+                    atual = atual->prox;
+                }
+            }
+        }
+    }
+
+    printf("Arestas da Arvore/Floresta Geradora Minima:\n");
+    printf("Origem - Destino \tPeso\n");
+    for (int i = 0; i < V; i++) {
+        if (pai[i] != -1) {
+            printf("  %d    -    %d \t\t%d\n", pai[i], i, chave[i]);
+            peso_total += chave[i];
+        }
+    }
+    printf("------------------------------------\n");
+    printf("Peso total: %d\n", peso_total);
+
+    free(pai);
+    free(chave);
+    free(na_mst);
+}

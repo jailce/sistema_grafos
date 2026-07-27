@@ -36,18 +36,15 @@ void bfs(Grafo *g, int origem);
 int *bfsDistancias(Grafo *g, int origem); // retorna vetor de distâncias
 
 // ===== Victor: topologica.c e prim.c =====
-int ordenacaoTopologica(Grafo *g,
-                        int *ordem); // retorna 0 se tem ciclo, 1 se ok
+int ordenacaoTopologica(Grafo *g,int *ordem); // retorna 0 se tem ciclo, 1 se ok
 int detectaCicloDirecionado(Grafo *g);
 
-void prim(
-    Grafo *g); // trata desconexos internamente, imprime arestas + peso total
+void prim(Grafo *g); // trata desconexos internamente, imprime arestas + peso total
 
 // ===== Jailce: dijkstra.c e main.c =====
 void dijkstra(Grafo *g, int origem, int **dist, int **anterior);
 void imprimirCaminho(int *anterior, int origem, int destino);
-void executarDijkstra(Grafo *g, int origem,
-                      int destinoAlvo); // junta dijkstra+caminho pro menu
+void executarDijkstra(Grafo *g, int origem, int destinoAlvo); // junta dijkstra+caminho pro menu
 
 void exibirMenu(void);
 int main(void);
